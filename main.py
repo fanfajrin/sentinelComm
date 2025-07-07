@@ -7,7 +7,7 @@ import time
 
 load_dotenv()
 
-data_train = pd.read_csv(f'./test.csv')
+data_train = pd.read_csv(f'./train.csv')
 
 data_train = data_train.head(50)
 
@@ -25,7 +25,7 @@ def classify_tweet(text):
             "prompt": f"Classify this sentence into disaster tweet or not disaster tweet. Output only 1 for disaster and 0 for not disaster. Sentence: '{text}'",
             "max_tokens": 10,  # Reduced since we only need 1 or 0
             "min_tokens": 1,
-            "temperature": 0.1,  # Lower temperature for more consistent results
+            "temperature": 0.1, 
             "presence_penalty": 0,
             "frequency_penalty": 0
         }
@@ -74,21 +74,7 @@ for index, row in data_train.iterrows():
     # Add a small delay to avoid rate limiting
     time.sleep(1)
 
-# # Display results
-# print("\nClassification Results:")
-# print(data_train[['id', 'text', 'target', 'prediction']].head(10))
 
 # Save results to CSV
 data_train.to_csv('./test_with_predictions.csv', index=False)
 print(f"\nResults saved to 'test_with_predictions.csv'")
-
-# # Optional: Calculate accuracy if you have ground truth labels
-# if 'target' in data_train.columns:
-#     # Remove rows where prediction failed
-#     valid_predictions = data_train.dropna(subset=['prediction'])
-    
-#     if len(valid_predictions) > 0:
-#         accuracy = (valid_predictions['target'] == valid_predictions['prediction']).mean()
-#         print(f"Accuracy: {accuracy:.2%}")
-#     else:
-#         print("No valid predictions to calculate accuracy")
